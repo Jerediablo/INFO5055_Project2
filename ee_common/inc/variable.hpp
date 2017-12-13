@@ -13,7 +13,10 @@
 
 #include "operand.hpp"
 
-
+/** Variable token. */
+class Variable : public Operand {
+	// TO DO 
+};
 
 /*=============================================================
 

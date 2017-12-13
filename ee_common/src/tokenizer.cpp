@@ -122,11 +122,45 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 			continue;
 		}
 
+		// Handle '(' 
+		if (*currentChar == '(') {
+			++currentChar;
+			tokenizedExpression.push_back(make<LeftParenthesis>());
+			continue;
+		}
+
+		// Handle ')' 
+		if (*currentChar == ')') {
+			++currentChar;
+			tokenizedExpression.push_back(make<RightParenthesis>());
+			continue;
+		}
+
 		// Handle '*' 
 		if (*currentChar == '*') {
 			++currentChar;
-			tokenizedExpression.push_back(make<Addition>());
-		
+			if (*currentChar == '*') {
+				++currentChar;
+				tokenizedExpression.push_back(make<Power>());
+			}
+			else {
+				tokenizedExpression.push_back(make<Multiplication>());
+			}
+			continue;
+		}
+
+		// Handle '/' 
+		if (*currentChar == '/') {
+			++currentChar;
+			tokenizedExpression.push_back(make<Division>());
+			continue;
+		}
+
+		// Handle '%' 
+		if (*currentChar == '%') {
+			++currentChar;
+			tokenizedExpression.push_back(make<Modulus>());
+			continue;
 		}
 
 		// Handle '!'
@@ -143,6 +177,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 			else {
 				throw XBadCharacter(expression, currentChar - begin(expression), "Factorial must follow Expression");
 			}
+			continue;
 		}
 
 
@@ -160,6 +195,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 			else {
 				tokenizedExpression.push_back(make<Identity>());
 			}
+			continue;
 		}
 
 		// Handle '-'

@@ -36,7 +36,6 @@ typename OPERAND_TYPE::value_type get_value( Token::pointer_type const& operand 
 }
 
 
-
 /*=============================================================
 
 Revision History

@@ -20,7 +20,7 @@
 class Real : public Operand {
 public:
 	DEF_POINTER_TYPE(Real)
-		using value_type = boost::multiprecision::number<boost::multiprecision::cpp_dec_float<1000, int32_t, void>>;
+	using value_type = boost::multiprecision::number<boost::multiprecision::cpp_dec_float<1000, int32_t, void>>;
 private:
 	value_type	value_;
 public:
