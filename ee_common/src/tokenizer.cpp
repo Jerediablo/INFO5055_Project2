@@ -27,7 +27,43 @@ using namespace std;
 
 /** Default constructor loads the keyword dictionary. */
 Tokenizer::Tokenizer() {
-//	keywords_["abs"]     = keywords_["Abs"]		= keywords_["ABS"]		= make<Abs>();
+ 	keywords_["abs"]     = keywords_["Abs"]		= keywords_["ABS"]		= make<Abs>();
+	keywords_["mod"]	 = keywords_["Mod"]		= keywords_["MOD"]		= make<Modulus>();
+
+	keywords_["pi"] = keywords_["Pi"] = keywords_["PI"] = make<Pi>();
+	keywords_["e"] = keywords_["E"] = make<E>();
+
+	keywords_["arccos"] = make<Arccos>();
+	keywords_["arcsin"] = make<Arcsin>();
+	keywords_["arctan"] = make<Arctan>();
+	keywords_["ceil"] = make<Ceil>();
+	keywords_["cos"] = make<Cos>();
+	keywords_["exp"] = make<Exp>();
+	keywords_["floor"] = make<Floor>();
+	keywords_["lb"] = make<Lb>();
+	keywords_["ln"] = make<Ln>();
+	keywords_["log"] = make<Log>();
+	keywords_["sin"] = make<Sin>();
+	keywords_["sqrt"] = make<Sqrt>();
+	keywords_["tan"] = make<Tan>();
+
+	keywords_["arctan2"] = make<Arctan2>();
+	keywords_["max"] = make<Max>();
+	keywords_["min"] = make<Min>();
+	keywords_["pow"] = make<Pow>();
+
+	keywords_["true"] = make<Boolean>(true);
+	keywords_["false"] = make<Boolean>(false);
+
+	keywords_["not"] = make<Not>();
+	keywords_["and"] = make<And>();
+	keywords_["or"] = make<Or>();
+	keywords_["xor"] = make<Xor>();
+	keywords_["nand"] = make<Nand>();
+	keywords_["nor"] = make<Nor>();
+	keywords_["xnor"] = make<Xnor>();
+
+	keywords_["results"] = make<Result>();
 }
 
 
@@ -122,6 +158,12 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 			continue;
 		}
 
+		if (isalpha(*currentChar)) {
+			tokenizedExpression.push_back(_get_identifier(currentChar, expression));
+
+			continue;
+		}
+
 		// Handle '(' 
 		if (*currentChar == '(') {
 			++currentChar;
@@ -213,6 +255,14 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 			else {
 				tokenizedExpression.push_back(make<Negation>());
 			}
+			continue;
+		}
+
+		// Handle ','
+		if (*currentChar == ',') {
+			++currentChar;
+			tokenizedExpression.push_back(make<ArgumentSeparator>());
+			
 			continue;
 		}
 
