@@ -19,7 +19,7 @@
 #define TEST_MIXED false
 
 #define TEST_BOOLEAN true
-#define TEST_RELATIONAL_OPERATOR false
+#define TEST_RELATIONAL_OPERATOR true
 
 
 #define TEST_VARIABLE false

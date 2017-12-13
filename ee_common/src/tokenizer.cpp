@@ -208,7 +208,15 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 		// Handle '!'
 		if (*currentChar == '!') {
 			++currentChar;
-			if (tokenizedExpression.size() == 0) {
+			
+			if (!(currentChar == end(expression))) {
+
+				if (*currentChar == '=') {
+					tokenizedExpression.push_back(make<Inequality>());
+					++currentChar;
+				}
+			}
+			else if (tokenizedExpression.size() == 0) {
 				throw XBadCharacter(expression, currentChar - begin(expression), "Factorial must follow Expression");
 			}
 			else if (is<RightParenthesis>(tokenizedExpression.back()) || is<Operand>(tokenizedExpression.back())
@@ -219,6 +227,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 			else {
 				throw XBadCharacter(expression, currentChar - begin(expression), "Factorial must follow Expression");
 			}
+
 			continue;
 		}
 
@@ -263,6 +272,45 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 			++currentChar;
 			tokenizedExpression.push_back(make<ArgumentSeparator>());
 			
+			continue;
+		}
+
+		// Handle '>'
+		if (*currentChar == '>') {
+			++currentChar;
+			if (*currentChar == '=') {
+				tokenizedExpression.push_back(make<GreaterEqual>());
+				++currentChar;
+			}
+			else {
+				tokenizedExpression.push_back(make<Greater>());
+			}
+			continue;
+		}
+
+		// Handle '<'
+		if (*currentChar == '<') {
+			++currentChar;
+			if (*currentChar == '=') {
+				tokenizedExpression.push_back(make<LessEqual>());
+				++currentChar;
+			}
+			else {
+				tokenizedExpression.push_back(make<Less>());
+			}
+			continue;
+		}
+
+		// Handle '='
+		if (*currentChar == '=') {
+			++currentChar;
+			if (*currentChar == '=') {
+				tokenizedExpression.push_back(make<Equality>());
+				++currentChar;
+			}
+			else {
+				tokenizedExpression.push_back(make<Assignment>());
+			}
 			continue;
 		}
 
