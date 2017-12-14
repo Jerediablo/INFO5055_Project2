@@ -9,11 +9,90 @@
 	*/
 
 #include "../inc/parser.hpp"
+#include "../inc/operand.hpp"
+#include "../inc/function.hpp"
+#include "../inc/pseudo_operation.hpp"
+#include "../inc/operator.hpp"
+#include <stack>
+#include <iostream>
+using namespace std;
 
 
 TokenList Parser::parse(TokenList const& infixTokens) {
 
-	return TokenList();	// Replace this with the postfix list.
+
+	// Shunting yard algorithm 
+
+	TokenList postfixTokens;				 // output queue
+	stack<Token::pointer_type> stack;		 // operation stack
+
+
+	for each (auto token in infixTokens) {
+		if (is<Operand>(token)) {
+			postfixTokens.push_back(token);
+		}
+		else if (is<Function>(token)) {
+			stack.push(token);
+		}
+		else if (is<ArgumentSeparator>(token)) {
+			while (!is<LeftParenthesis>(stack.top())) {
+				postfixTokens.push_back(stack.top());
+				stack.pop();
+			}
+		}
+		else if (is<LeftParenthesis>(token)) {
+			stack.push(token);
+		}
+		else if (is<RightParenthesis>(token)) {
+			while (!is<LeftParenthesis>(stack.top())) {
+				postfixTokens.push_back(stack.top());
+				stack.pop();
+			}
+			if (stack.empty()) {
+				throw exception("Right parenthesis, has no matching left parenthesis");
+			}
+			stack.pop();
+			if (is<Function>(stack.top())) {
+				postfixTokens.push_back(stack.top());
+				stack.pop();
+			}
+		}
+		else if (is<Operator>(token)) {
+			while (!stack.empty()) {
+				if (!is<Operator>(stack.top())) {
+					break;
+				}
+				if (is<NonAssociative>(token)) {
+					break;
+				}
+				if (is<LAssocOperator>(token)) {
+					// FINISH THE ABOVE BY PUTTING THE AND IN 
+					break;
+				}
+				if (is<RAssocOperator>(token)) {
+					// FINISH THE ABOVE BY PUTTING THE AND IN 
+					break;
+				}
+					
+				postfixTokens.push_back(stack.top());
+				stack.pop();
+
+			} // end while loop 
+			stack.push(token);
+		} 
+		else {
+			throw exception("Unknown Token");
+		}
+	} // end for each
+
+	while (!stack.empty()) {
+		if (is<LeftParenthesis>(stack.top())) {
+			throw exception("Missing right-parenthesis");
+		}
+		postfixTokens.push_back(stack.top());
+		stack.pop();
+	}
+	return postfixTokens; // return output queue
 }
 
 

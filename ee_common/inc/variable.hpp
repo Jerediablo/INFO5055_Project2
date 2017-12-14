@@ -15,7 +15,16 @@
 
 /** Variable token. */
 class Variable : public Operand {
-	// TO DO 
+public:
+	DEF_POINTER_TYPE(Variable)
+	using value_type = Operand::pointer_type;
+private:
+	value_type	value_;
+public:
+	Variable() {}
+	void					set_value(value_type const& setVal) {value_ = setVal; }
+	value_type				get_value() const { return value_; }
+	string_type				to_string() const;
 };
 
 /*=============================================================

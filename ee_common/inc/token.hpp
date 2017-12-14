@@ -77,10 +77,9 @@ inline bool is(ORIGINAL_TYPE const* tknPtr) {
 
 
 /** Convert to subclass type. */
-// todo: convert<T>(U)
 template <typename CONVERTED_TYPE>
 inline typename CONVERTED_TYPE::pointer_type convert(Token::pointer_type const& tkn) {
-	return dynamic_pointer_cast<CONVERTED_TYPE const *>(tkn);
+	return dynamic_pointer_cast<CONVERTED_TYPE>(tkn);
 }
 
 

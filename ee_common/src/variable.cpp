@@ -9,8 +9,14 @@
 	*/
 
 #include "../inc/variable.hpp"
+#include <boost/lexical_cast.hpp>
 
-
+Variable::string_type Variable::to_string() const {
+	if (get_value() == NULL)
+		return string_type("Variable: null");
+	else
+		return string_type("Variable: ") + boost::lexical_cast<string_type>(get_value()) ;
+}
 
 /*=============================================================
 

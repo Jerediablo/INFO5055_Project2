@@ -63,7 +63,7 @@ Tokenizer::Tokenizer() {
 	keywords_["nor"] = make<Nor>();
 	keywords_["xnor"] = make<Xnor>();
 
-	keywords_["results"] = make<Result>();
+	keywords_["result"] = make<Result>();
 }
 
 
@@ -83,6 +83,14 @@ Token::pointer_type Tokenizer::_get_identifier(Tokenizer::string_type::const_ite
 	dictionary_type::iterator iter = keywords_.find(ident);
 	if (iter != end(keywords_))
 		return iter->second;
+	
+	// TO FIX 
+	/*dictionary_type::iterator iterVar = variables_.find(ident);
+	if (iterVar != end(variables_))
+		return iterVar->second;
+	else
+		variables_[ident] = make<Variable>();
+		return make<Variable>();*/
 	
 
 	throw XBadCharacter(expression, currentChar - begin(expression));
@@ -175,6 +183,13 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 		if (*currentChar == ')') {
 			++currentChar;
 			tokenizedExpression.push_back(make<RightParenthesis>());
+			continue;
+		}
+
+		// Handle '#'
+		if (*currentChar == '#') {
+			tokenizedExpression.push_back(make<Power>());
+			++currentChar;
 			continue;
 		}
 
