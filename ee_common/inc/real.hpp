@@ -1,15 +1,11 @@
 #if !defined(GUARD_real_hpp20091125_)
 #define GUARD_real_hpp20091125_
 
-/** @file: real.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@date 2012-11-13
-	@version 1.0.0
-	@note Compiles under Visual C++ v120
-
-	@brief Real class declaration.
-	*/
+/*
+File:		real.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "operand.hpp"
 #include <boost/multiprecision/cpp_dec_float.hpp>
@@ -36,6 +32,7 @@ public:
 	Pi() : Real( boost::math::constants::pi<value_type>() ) { }
 };
 
+/** E constant token. */
 class E : public Real {
 public:
 	E() : Real(boost::math::constants::e<value_type>()) { }

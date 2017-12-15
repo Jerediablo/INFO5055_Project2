@@ -1,17 +1,13 @@
-/** @file: real.cpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@date 2012-11-13
-	@version 1.0.0
-	@note Compiles under Visual C++ v120
-
-	@brief Real class implementation.
-	*/
+/*
+File:		real.cpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "../inc/real.hpp"
 #include <boost/lexical_cast.hpp>
 
-
+//Function to return the token type as a string for a Real token
 Real::string_type Real::to_string() const {
 	return /*string_type("Real: ") + */boost::lexical_cast<string_type>(get_value());
 }

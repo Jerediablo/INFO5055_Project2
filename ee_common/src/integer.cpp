@@ -1,19 +1,14 @@
-/** @file: integer.cpp
-	@author Garth Santor/Trinh Han
-	@author garth.santor@sympatico.ca
-	@author http://www.gats.ca/
-	@date 2012-11-16
-	@version 1.0.0
-	@note Compiles under Visaul C++ v120
-
-	@brief Integer class implementation.
-	*/
+/*
+File:		integer.cpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "../inc/integer.hpp"
 #include <boost/lexical_cast.hpp>
 
 
-
+//Function to return the token type as a string for an Integer token
 Integer::string_type Integer::to_string() const {
 	return /*string_type("Integer: ") + */boost::lexical_cast<string_type>(get_value());
 }

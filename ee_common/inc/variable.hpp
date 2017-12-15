@@ -1,15 +1,11 @@
 #if !defined(GUARD_variable_hpp20091126_)
 #define GUARD_variable_hpp20091126_
 
-/** @file: variable.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@date 2012-11-13
-	@version 0.1.1
-	@note Compiles under Visual C++ v110
-
-	@brief Variable class declaration.
-	*/
+/*
+File:		variable.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "operand.hpp"
 

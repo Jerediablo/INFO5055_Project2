@@ -1,15 +1,11 @@
 #if !defined(GUARD_pseudo_operation_hpp20091210_)
 #define GUARD_pseudo_operation_hpp20091210_
 
-/** @file: pseudo_operation.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@date 2012-11-13
-	@version 0.0.1
-	@note Compiles under Visual C++ v110
-
-	@brief PseudoOperation class declaration.
-	*/
+/*
+File:		pseudo_operation.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "token.hpp"
 

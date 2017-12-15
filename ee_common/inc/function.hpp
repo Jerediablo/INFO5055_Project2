@@ -1,15 +1,11 @@
 #if !defined(GUARD_function_hpp20091126_)
 #define GUARD_function_hpp20091126_
 
-/** @file: function.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@version 1.0.0
-	@date 2012-11-13
-	@note Compiles under Visual C++ v120
-
-	@brief function token declarations.
-	*/
+/*
+File:		function.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "operation.hpp"
 
@@ -25,45 +21,64 @@ class Function : public Operation { };
 				/** Absolute value function token. */
 				class Abs : public OneArgFunction {	};
 
+				/** Arccos function token. */
 				class Arccos : public OneArgFunction { };
 
+				/** Arcsin function token. */
 				class Arcsin : public OneArgFunction { };
 
+				/** Arctan function token. */
 				class Arctan : public OneArgFunction { };
 
+				/** Ceil function token. */
 				class Ceil : public OneArgFunction { };
 
+				/** Cos function token. */
 				class Cos : public OneArgFunction {	};
 
+				/** Exp function token. */
 				class Exp : public OneArgFunction {	};
 
-				class Floor : public OneArgFunction {	};
+				/** Floor function token. */
+				class Floor : public OneArgFunction { };
 
-				class Lb : public OneArgFunction {	};
+				/** Lb function token. */
+				class Lb : public OneArgFunction { };
 
-				class Ln : public OneArgFunction {	};
+				/** Ln function token. */
+				class Ln : public OneArgFunction { };
 
+				/** Log function token. */
 				class Log : public OneArgFunction {	};
 
+				/** Result function token. */
 				class Result : public OneArgFunction { };
 
+				/** Sin function token. */
 				class Sin : public OneArgFunction {	};
 
+				/** Sqrt function token. */
 				class Sqrt : public OneArgFunction { };
 
+				/** Tan function token. */
 				class Tan : public OneArgFunction {	};
 
+		/** Two argument function token base class. */
 		class TwoArgFunction : public Function {
 		public:
 			virtual unsigned number_of_args() const override { return 2; }
 		};
 
+				/** Arctan two argument function token. */
 				class Arctan2 : public TwoArgFunction {	};
 
+				/** Max function token. */
 				class Max : public TwoArgFunction {	};
 
+				/** Min function token. */
 				class Min : public TwoArgFunction {	};
 
+				/** Power function token. */
 				class Pow : public TwoArgFunction {	};
 /*=============================================================
 

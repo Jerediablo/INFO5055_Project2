@@ -1,17 +1,16 @@
-/** @file: variable.cpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@date 2012-11-13
-	@version 0.1.1
-	@note Compiles under Visual C++ v110
-
-	@brief Variable class implementation.
-	*/
+/*
+File:		variable.cpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "../inc/variable.hpp"
 #include <boost/lexical_cast.hpp>
 
+//Function to return the token type as a string for a Variable token
 Variable::string_type Variable::to_string() const {
+
+	//If the value is NULL, have an appropriate string printed
 	if (get_value() == NULL)
 		return string_type("Variable: null");
 	else

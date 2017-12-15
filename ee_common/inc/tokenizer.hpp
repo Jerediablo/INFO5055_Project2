@@ -1,15 +1,11 @@
 #ifndef GUARD_tokenizer_hpp20091125_
 #define GUARD_tokenizer_hpp20091125_
 
-/** @file: tokenizer.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@version 0.1.0
-	@date 2012-11-15
-	@note Compiles under Visual C++ v110
-
-	@brief Tokenizer class declaration for Expression Evaulator.
-	*/
+/*
+File:		tokenizer.cpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "token.hpp"
 #include <map>

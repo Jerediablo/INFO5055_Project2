@@ -1,12 +1,8 @@
-/** @file: tokenizer.cpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@version 0.3.0
-	@date 2017-11-23
-	@note Compiles under Visual C++ 15.4.4
-
-	@brief Tokenizer class implementation.
-	*/
+/*
+File:		tokenizer.cpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "../inc/tokenizer.hpp"
 #include "../inc/boolean.hpp"

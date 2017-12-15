@@ -1,15 +1,11 @@
 #ifndef GUARD_parser_hpp20091201_
 #define GUARD_parser_hpp20091201_
 
-/** @file: parser.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@version 1.0.0
-	@date 2012-11-13
-	@note Compiles under Visual C++ v120
-
-	@brief Parser class declaration.
-	*/
+/*
+File:		parser.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include <boost/noncopyable.hpp>
 #include "token.hpp"

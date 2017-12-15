@@ -1,14 +1,11 @@
 #if !defined(GUARD_operation_hpp20091210_)
 #define GUARD_operation_hpp20091210_
 
-/** @file: operation.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@version 0.1.1
-	@date 2012-11-13
-	@note Compiles under Visual C++ v110
-	@brief Operation class declaration.
-	*/
+/*
+File:		operation.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 
 #include "operand.hpp"

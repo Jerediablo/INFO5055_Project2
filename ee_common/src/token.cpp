@@ -1,17 +1,13 @@
-/** @file: token.cpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@date 2012-11-13
-	@version 0.0.0
-	@note Compiles under Visual C++ v110
-
-	@brief Operation class implemenation.
-	*/
+/*
+File:		token.cpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "../inc/token.hpp"
 using namespace std;
 
-
+//Function to name of the class, inside angled brackets, removing the word 'class'
 Token::string_type	Token::to_string() const {
 	return string_type("<") + string_type(typeid(*this).name()).substr(6) + string_type(">");
 }

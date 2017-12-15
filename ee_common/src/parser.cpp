@@ -1,12 +1,9 @@
-/** @file: parser.cpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@version 1.0.0
-	@date 2012-11-13
-	@note Compiles under Visual C++ v120
 
-	@brief Parser class implementation.
-	*/
+/*
+File:		parser.cpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "../inc/parser.hpp"
 #include "../inc/operand.hpp"
@@ -26,7 +23,7 @@ TokenList Parser::parse(TokenList const& infixTokens) {
 	TokenList postfixTokens;				 // output queue
 	stack<Token::pointer_type> stack;		 // operation stack
 
-
+	// Go through every token in the input queue
 	for each (auto token in infixTokens) {
 		if (is<Operand>(token)) {
 			postfixTokens.push_back(token);
@@ -52,9 +49,11 @@ TokenList Parser::parse(TokenList const& infixTokens) {
 				throw exception("Right parenthesis, has no matching left parenthesis");
 			}
 			stack.pop();
-			if (is<Function>(stack.top())) {
-				postfixTokens.push_back(stack.top());
-				stack.pop();
+			if (!stack.empty()) {
+				if (is<Function>(stack.top())) {
+					postfixTokens.push_back(stack.top());
+					stack.pop();
+				}
 			}
 		}
 		else if (is<Operator>(token)) {
@@ -65,12 +64,12 @@ TokenList Parser::parse(TokenList const& infixTokens) {
 				if (is<NonAssociative>(token)) {
 					break;
 				}
-				if (is<LAssocOperator>(token)) {
-					// FINISH THE ABOVE BY PUTTING THE AND IN 
+				if (is<LAssocOperator>(token) && 
+					convert<Operator>(token)->get_precedence() > convert<Operator>(stack.top())->get_precedence()) {		 
 					break;
 				}
-				if (is<RAssocOperator>(token)) {
-					// FINISH THE ABOVE BY PUTTING THE AND IN 
+				if (is<RAssocOperator>(token) && 
+					convert<Operator>(token)->get_precedence() >= convert<Operator>(stack.top())->get_precedence()) {
 					break;
 				}
 					

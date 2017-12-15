@@ -1,15 +1,11 @@
 #if !defined(GUARD_boolean_hpp20091126_)
 #define GUARD_boolean_hpp20091126_
 
-/** @file: boolean.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@version 0.1.1
-	@date 2012-11-13
-	@note Compiles under Visual C++ v110
-
-	@brief Boolean class declaration.
-	*/
+/*
+File:		boolean.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "operand.hpp"
 

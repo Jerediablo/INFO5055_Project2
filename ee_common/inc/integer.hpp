@@ -1,15 +1,11 @@
 #if !defined(GUARD_integer_hpp20091125_)
 #define GUARD_integer_hpp20091125_
 
-/** @file: integer.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@version 1.0.0
-	@date 2012-11-15
-	@note Compiles under Visual C++ v110
-
-	@brief Integer class declaration.
-	*/
+/*
+File:		integer.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include "operand.hpp"
 #include <boost/multiprecision/cpp_int.hpp>

@@ -1,15 +1,11 @@
 #if !defined(GUARD_token_hpp20091125_)
 #define GUARD_token_hpp20091125_
 
-/** @file: token.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@date 2015-11-03
-	@version 0.3.0
-	@note Compiles under Visual C++ v110
-
-	@brief Token class declaration for Expression Evaluator project.
-	*/
+/*
+File:		token.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 #include <memory>
 #include <boost/noncopyable.hpp>

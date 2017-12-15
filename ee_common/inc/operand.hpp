@@ -1,14 +1,11 @@
 #if !defined(GUARD_operand_hpp20091125_)
 #define GUARD_operand_hpp20091125_
 
-/** @file: operand.hpp
-	@author Garth Santor/Trinh Han
-	@author http://www.gats.ca/
-	@version 0.1.1
-	@date 2012-11-13
-	@note Compiles under Visual C++ v110
-	@brief Operand class declaration.
-	*/
+/*
+File:		operand.hpp
+Author:		Jeremy Peterson-Katz
+Date:		December 14, 2017
+*/
 
 
 #include "token.hpp"
