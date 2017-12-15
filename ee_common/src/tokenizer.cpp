@@ -23,46 +23,49 @@ using namespace std;
 
 /** Default constructor loads the keyword dictionary. */
 Tokenizer::Tokenizer() {
+
+	// Keyword Dictionary: 
+
  	keywords_["abs"]     = keywords_["Abs"]		= keywords_["ABS"]		= make<Abs>();
 	keywords_["mod"]	 = keywords_["Mod"]		= keywords_["MOD"]		= make<Modulus>();
 
-	keywords_["pi"] = keywords_["Pi"] = keywords_["PI"] = make<Pi>();
-	keywords_["e"] = keywords_["E"] = make<E>();
+	keywords_["pi"]		 = keywords_["Pi"]		= keywords_["PI"]		= make<Pi>();
+	keywords_["e"]		 = keywords_["E"]		= make<E>();
 
-	keywords_["arccos"] = make<Arccos>();
-	keywords_["arcsin"] = make<Arcsin>();
-	keywords_["arctan"] = make<Arctan>();
-	keywords_["ceil"] = make<Ceil>();
-	keywords_["cos"] = make<Cos>();
-	keywords_["exp"] = make<Exp>();
-	keywords_["floor"] = make<Floor>();
-	keywords_["lb"] = make<Lb>();
-	keywords_["ln"] = make<Ln>();
-	keywords_["log"] = make<Log>();
-	keywords_["sin"] = make<Sin>();
-	keywords_["sqrt"] = make<Sqrt>();
-	keywords_["tan"] = make<Tan>();
+	keywords_["arccos"]	 = keywords_["Arccos"]	= keywords_["ARCCOS"]	= make<Arccos>();
+	keywords_["arcsin"]  = keywords_["Arcsin"]  = keywords_["ARCSIN"]   = make<Arcsin>();
+	keywords_["arctan"]  = keywords_["Arctan"]  = keywords_["ARCTAN"]   = make<Arctan>();
+	keywords_["ceil"]	 = keywords_["Ceil"]	= keywords_["CEIL"]		= make<Ceil>();
+	keywords_["cos"]	 = keywords_["Cos"]		= keywords_["COS"]		= make<Cos>();
+	keywords_["exp"]	 = keywords_["Exp"]		= keywords_["EXP"]		= make<Exp>();
+	keywords_["floor"]	 = keywords_["Floor"]	= keywords_["FLOOR"]	= make<Floor>();
+	keywords_["lb"]		 = keywords_["Lb"]		= keywords_["LB"]		= make<Lb>();
+	keywords_["ln"]		 = keywords_["Ln"]		= keywords_["LN"]		= make<Ln>();
+	keywords_["log"]	 = keywords_["Log"]		= keywords_["LOG"]		= make<Log>();
+	keywords_["sin"]	 = keywords_["Sin"]		= keywords_["SIN"]		= make<Sin>();
+	keywords_["sqrt"]	 = keywords_["Sqrt"]	= keywords_["SQRT"]		= make<Sqrt>();
+	keywords_["tan"]	 = keywords_["Tan"]		= keywords_["TAN"]		= make<Tan>();
 
-	keywords_["arctan2"] = make<Arctan2>();
-	keywords_["max"] = make<Max>();
-	keywords_["min"] = make<Min>();
-	keywords_["pow"] = make<Pow>();
+	keywords_["arctan2"] = keywords_["Arctan2"] = keywords_["ARCTAN2"]  = make<Arctan2>();
+	keywords_["max"]	 = keywords_["Max"]		= keywords_["MAX"]		= make<Max>();
+	keywords_["min"]	 = keywords_["Min"]		= keywords_["MIN"]		= make<Min>();
+	keywords_["pow"]	 = keywords_["Pow"]		= keywords_["POW"]		= make<Pow>();
 
-	keywords_["true"] = make<Boolean>(true);
-	keywords_["false"] = make<Boolean>(false);
+	keywords_["true"]	 = keywords_["True"]	= keywords_["TRUE"]		= make<Boolean>(true);
+	keywords_["false"]	 = keywords_["False"]	= keywords_["FALSE"]	= make<Boolean>(false);
 
-	keywords_["not"] = make<Not>();
-	keywords_["and"] = make<And>();
-	keywords_["or"] = make<Or>();
-	keywords_["xor"] = make<Xor>();
-	keywords_["nand"] = make<Nand>();
-	keywords_["nor"] = make<Nor>();
-	keywords_["xnor"] = make<Xnor>();
+	keywords_["not"]	 = keywords_["Not"]		= keywords_["NOT"]		= make<Not>();
+	keywords_["and"]	 = keywords_["And"]		= keywords_["AND"]		= make<And>();
+	keywords_["or"]		 = keywords_["Or"]		= keywords_["OR"]		= make<Or>();
+	keywords_["xor"]	 = keywords_["Xor"]		= keywords_["XOR"]		= make<Xor>();
+	keywords_["nand"]	 = keywords_["Nand"]	= keywords_["NAND"]		= make<Nand>();
+	keywords_["nor"]	 = keywords_["Nor"]		= keywords_["NOR"]		= make<Nor>();
+	keywords_["xnor"]	 = keywords_["Xnor"]	= keywords_["XNOR"]		= make<Xnor>();
 
-	keywords_["result"] = make<Result>();
+	keywords_["result"]  = keywords_["Result"]  = keywords_["RESULT"]	= make<Result>();
+
+	// End of Keyword Dictionary
 }
-
-
 
 
 /** Get an identifier from the expression.
@@ -103,32 +106,46 @@ Token::pointer_type Tokenizer::_get_identifier(Tokenizer::string_type::const_ite
 Token::pointer_type Tokenizer::_get_number(Tokenizer::string_type::const_iterator& currentChar, Tokenizer::string_type const& expression) {
 	assert(isdigit(*currentChar) && "currentChar must be a pointer to a digit");
 
+	// Create an empty string
 	string_type s;
+
+	// Set decimal flag to false
 	bool decimalEntered = false;
 	
+	// Keep reading in while there are numbers or a decimal poin
 	while (currentChar != expression.end() && (isdigit(*currentChar) || *currentChar == '.')) {
+		// If digit, add to string and increment pointer
 		if (isdigit(*currentChar)){
 			s += *currentChar;
 			++currentChar;
 		}
+		// If first decimal add to string, set decimal flag to true, and increment pointer
 		else if (*currentChar == '.' && decimalEntered == false) {
 			s += *currentChar;
 			decimalEntered = true;
 			++currentChar;
+
+			// Make sure there is a number after the decimal point
 			if (!(isdigit(*currentChar))) {
-				throw XBadCharacter(expression, currentChar - begin(expression));
+				throw XBadCharacter(expression, currentChar - begin(expression), "Need a number after decimal");
 			}
 		}
+
+		// If not the first decimal throw exception
 		else if (*currentChar == '.' && decimalEntered == true) {
-			throw XBadCharacter(expression, currentChar - begin(expression));
+			throw XBadCharacter(expression, currentChar - begin(expression), "Only one decimal per number");
 		}
 	}
 
+	// If there was no decimal point it is an integer
 	if (decimalEntered == false) {
+		// Convert string to an integer and return it
 		Integer::value_type i = static_cast<Integer::value_type>(s);
 		return make<Integer>(i);
 	}
+	// If there is a decimal point it is a real number
 	else {
+		// Convert string to a real number and return it
 		Real::value_type i = static_cast<Real::value_type>(s);
 		return make<Real>(i);
 	}
@@ -162,6 +179,8 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 			continue;
 		}
 
+		// If alphabetic character, go to _get_identifier function to either determine if it's a keyword
+		// or a variable, otherwise make a variable
 		if (isalpha(*currentChar)) {
 			tokenizedExpression.push_back(_get_identifier(currentChar, expression));
 
@@ -227,6 +246,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 					++currentChar;
 				}
 			}
+			// Make sure factorial comes after something else
 			else if (tokenizedExpression.size() == 0) {
 				throw XBadCharacter(expression, currentChar - begin(expression), "Factorial must follow Expression");
 			}
@@ -246,6 +266,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 		// Handle '+' 
 		if (*currentChar == '+') {
 			++currentChar;
+			// Determine if the '+' is for an identity token or an addition token
 			if (tokenizedExpression.size() == 0) {
 				tokenizedExpression.push_back(make<Identity>());
 			}
@@ -263,6 +284,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 		// Handle '-'
 		if (*currentChar == '-') {
 			++currentChar;
+			// Determine if the '+' is for a negation token or a subtraction token
 			if (tokenizedExpression.size() == 0) {
 				tokenizedExpression.push_back(make<Negation>());
 			}
@@ -289,6 +311,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 		// Handle '>'
 		if (*currentChar == '>') {
 			++currentChar;
+			// Handle '>='
 			if (*currentChar == '=') {
 				tokenizedExpression.push_back(make<GreaterEqual>());
 				++currentChar;
@@ -302,6 +325,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 		// Handle '<'
 		if (*currentChar == '<') {
 			++currentChar;
+			// Handle '<='
 			if (*currentChar == '=') {
 				tokenizedExpression.push_back(make<LessEqual>());
 				++currentChar;
@@ -315,6 +339,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 		// Handle '='
 		if (*currentChar == '=') {
 			++currentChar;
+			// Handle '=='
 			if (*currentChar == '=') {
 				tokenizedExpression.push_back(make<Equality>());
 				++currentChar;
