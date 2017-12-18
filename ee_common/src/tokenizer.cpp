@@ -83,13 +83,17 @@ Token::pointer_type Tokenizer::_get_identifier(Tokenizer::string_type::const_ite
 	if (iter != end(keywords_))
 		return iter->second;
 	
-	// TO FIX 
-	/*dictionary_type::iterator iterVar = variables_.find(ident);
+	// Check if the identifier is in the variable library, if it is return the value
+	dictionary_type::iterator iterVar = variables_.find(ident);
 	if (iterVar != end(variables_))
 		return iterVar->second;
-	else
-		variables_[ident] = make<Variable>();
-		return make<Variable>();*/
+
+	// If it was not in the variable library, add it and return it
+	else {
+		auto v = make<Variable>();
+		variables_[ident] = v;
+		return v;
+	}
 	
 
 	throw XBadCharacter(expression, currentChar - begin(expression));
