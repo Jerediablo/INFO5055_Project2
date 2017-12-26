@@ -12,6 +12,8 @@
 	*/
 
 #include "operand.hpp"
+#include "operation.hpp"
+
 
 class RPNEvaluator {
 public:

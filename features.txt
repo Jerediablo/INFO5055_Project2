@@ -1,0 +1,5 @@
+Project 2: Expression Evaluator - Part 1
+By: Jeremy Peterson-Katz
+===========================================
+
+Implemented all features.

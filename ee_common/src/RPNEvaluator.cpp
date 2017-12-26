@@ -9,10 +9,38 @@
 	*/
 
 #include "../inc/RPNEvaluator.hpp"
+#include <stack>
+using namespace std;
 
 Operand::pointer_type RPNEvaluator::evaluate(TokenList const& rpnExpression) {
 
-	return Operand::pointer_type(); // replace this with the result.
+	stack<Token::pointer_type> operandStack;		 // operand stack
+
+	for each (auto token in rpnExpression) {
+		if (is<Operand>(token)) {
+			operandStack.push(token);
+		}
+		else if (is<Operation>(token)) {
+			if (convert<Operation>(token)->number_of_args() > operandStack.size()) {
+				throw exception("Insufficient # of operands for operation");
+			}
+
+			// DO STUFF HERE :X 
+		}
+	}
+	
+	if (operandStack.size() > 1) {
+		throw exception("Error: too many operands");
+	}
+
+	if (operandStack.size() == 0) {
+		throw exception("Error: insufficient operands");
+	}
+
+	Operand::pointer_type answer = convert<Operand>(operandStack.top());
+	operandStack.pop();
+
+	return answer; 
 }
 
 /*=============================================================
