@@ -3,8 +3,8 @@
 
 #define TEST_INTEGER true
 
-#define TEST_UNARY_OPERATOR false
-#define TEST_BINARY_OPERATOR false
+#define TEST_UNARY_OPERATOR true
+#define TEST_BINARY_OPERATOR true
 
 #define	TEST_NAMED_OPERATOR false
 #define TEST_RIGHT_ASSOCIATIVE_OPERATOR false
@@ -18,7 +18,7 @@
 #define TEST_REAL false
 #define TEST_MIXED false
 
-#define TEST_BOOLEAN true
+#define TEST_BOOLEAN false
 #define TEST_RELATIONAL_OPERATOR false
 
 

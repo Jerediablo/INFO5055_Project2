@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(no_operand) {
 			auto result = RPNEvaluator().evaluate({ make<Integer>(5), make<Factorial>() });
 			BOOST_CHECK(get_value<Integer>(result) == Integer::value_type(120));
 		}
-	#endif
+	#endif	
 
 
 	// Logical not

@@ -11,8 +11,11 @@
 	@brief RPN Evaluator class declaration.
 	*/
 
-#include "operand.hpp"
 #include "operation.hpp"
+#include "integer.hpp"
+#include <stack>
+using namespace std;
+
 
 
 class RPNEvaluator {
@@ -20,6 +23,15 @@ public:
 	Operand::pointer_type evaluate(TokenList const& container);
 };
 
+class LookupTable {
+public:
+	Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Token::pointer_type const& operation);
+};
+
+
+// MACROS 
+
+#define NEGATION(val) (val * -1);
 /*=============================================================
 
 Revision History
