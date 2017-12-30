@@ -29,9 +29,6 @@ public:
 };
 
 
-// MACROS 
-
-#define NEGATION(val) (val * -1);
 /*=============================================================
 
 Revision History
