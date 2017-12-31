@@ -28,8 +28,10 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 
 using FunctionPointer = Operand::pointer_type(*)(Operand::pointer_type, Operand::pointer_type);
 
+
+
 // Operation functions declarations
-	// Integer Functions
+// Integer Functions
 Operand::pointer_type intIdentityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type intNegationFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type intFactorialFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
@@ -46,9 +48,11 @@ Operand::pointer_type intGreaterEqualFunc(Operand::pointer_type operand1, Operan
 Operand::pointer_type intLessFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type intLessEqualFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type intAbsoluteFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
+Operand::pointer_type intMaxFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
+Operand::pointer_type intMinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 
 
-	// Real Functions
+// Real Functions
 Operand::pointer_type realIdentityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type realNegationFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type realFactorialFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
@@ -77,9 +81,13 @@ Operand::pointer_type realLnFunc(Operand::pointer_type operand1, Operand::pointe
 Operand::pointer_type realSinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type realSqrtFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type realTanFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
+Operand::pointer_type realMaxFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
+Operand::pointer_type realMinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
+Operand::pointer_type realArctan2Func(Operand::pointer_type operand1, Operand::pointer_type operand2);
 
 
-	// Boolean Functions
+
+// Boolean Functions
 Operand::pointer_type boolNotFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type boolAndFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type boolNandFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
@@ -92,7 +100,6 @@ Operand::pointer_type boolGreaterFunc(Operand::pointer_type operand1, Operand::p
 Operand::pointer_type boolGreaterEqualFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type boolLessFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type boolLessEqualFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-
 
 Operand::pointer_type RPNEvaluator::evaluate(TokenList const& rpnExpression) {
 
@@ -146,29 +153,13 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 	Operand::pointer_type operand1 = convert<Operand>(operandStack.top());
 	Operand::pointer_type operand2;
 
-	if (is<Integer>(operandStack.top())) {
-		x = 0;
-	}
-	else if (is<Real>(operandStack.top())) {
-		x = 1;
-	}
-	else if (is<Boolean>(operandStack.top())) {
-		x = 2;
-	}
+	x = operand1->opIndex();
 
 	operandStack.pop();
 
 	if (operandStack.size() != 0) {
 		operand2 = convert<Operand>(operandStack.top());
-		if (is<Integer>(operandStack.top())) {
-			y = 0;
-		}
-		else if (is<Real>(operandStack.top())) {
-			y = 1;
-		}
-		else if (is<Boolean>(operandStack.top())) {
-			y = 2;
-		}
+		y = operand2->opIndex();
 	}
 
 	if (is<Identity>(operation)) {
@@ -195,7 +186,7 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 	else if (is<Modulus>(operation)) {
 		z = 7;
 	}
-	else if (is<Power>(operation)) {
+	else if (is<Power>(operation) || is<Pow>(operation)) {
 		z = 8;
 	}
 	else if (is<Not>(operation)) {
@@ -273,10 +264,19 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 	else if (is<Tan>(operation)) {
 		z = 33;
 	}
+	else if (is<Max>(operation)) {
+		z = 34;
+	}
+	else if (is<Min>(operation)) {
+		z = 35;
+	}
+	else if (is<Arctan2>(operation)) {
+		z = 36;
+	}
 
 
 	
-	FunctionPointer lookupTable[3][3][34] =
+	FunctionPointer lookupTable[3][3][37] =
 	{
 		/*Operand 1 is Int*/{
 			/*Operand 2 is Int (or nothing)*/{
@@ -301,7 +301,21 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 18*/	intGreaterEqualFunc,
 				/*z = 19*/	intLessFunc,
 				/*z = 20*/	intLessEqualFunc,
-				/*z = 21*/	intAbsoluteFunc },
+				/*z = 21*/	intAbsoluteFunc,
+				/*z = 22*/	realArccosFunc,
+				/*z = 23*/	realArcsinFunc,
+				/*z = 24*/	realArctanFunc,
+				/*z = 25*/	realCeilFunc,
+				/*z = 26*/	realCosFunc,
+				/*z = 27*/	realExpFunc,
+				/*z = 28*/	realFloorFunc,
+				/*z = 29*/	realLbFunc,
+				/*z = 30*/	realLnFunc,
+				/*z = 31*/	realSinFunc,
+				/*z = 32*/	realSqrtFunc,
+				/*z = 33*/	realTanFunc, 
+				/*z = 34*/	intMaxFunc, 
+				/*z = 35*/	intMinFunc, },
 			/*Operand 2 is Real*/{  },
 			/*Operand 2 is Bool*/{  }
 		},
@@ -362,7 +376,23 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 17*/	realGreaterFunc,
 				/*z = 18*/	realGreaterEqualFunc,
 				/*z = 19*/	realLessFunc,
-				/*z = 20*/	realLessEqualFunc },
+				/*z = 20*/	realLessEqualFunc, 
+				/*z = 21*/	intAbsoluteFunc,
+				/*z = 22*/	realArccosFunc,
+				/*z = 23*/	realArcsinFunc,
+				/*z = 24*/	realArctanFunc,
+				/*z = 25*/	realCeilFunc,
+				/*z = 26*/	realCosFunc,
+				/*z = 27*/	realExpFunc,
+				/*z = 28*/	realFloorFunc,
+				/*z = 29*/	realLbFunc,
+				/*z = 30*/	realLnFunc,
+				/*z = 31*/	realSinFunc,
+				/*z = 32*/	realSqrtFunc,
+				/*z = 33*/	realTanFunc,
+				/*z = 34*/	realMaxFunc,
+				/*z = 35*/	realMinFunc, 
+				/*z = 36*/	realArctan2Func },
 			/*Operand 2 is Bool*/{}
 		},
 		/*Operand 1 is Bool*/{
@@ -536,7 +566,15 @@ Operand::pointer_type intAbsoluteFunc(Operand::pointer_type operand1, Operand::p
 		return convert<Operand>(make<Integer>((convert<Integer>(operand1)->get_value()) * -1));
 }
 
-// Real Functions
+
+Operand::pointer_type intMaxFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+	return convert<Operand>(make<Integer>(max((convert<Integer>(operand1)->get_value()), (convert<Integer>(operand2)->get_value()))));
+}
+Operand::pointer_type intMinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+	return convert<Operand>(make<Integer>(min((convert<Integer>(operand1)->get_value()), (convert<Integer>(operand2)->get_value()))));
+}
+
+// Real Functions 
 Operand::pointer_type realIdentityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
 	return convert<Operand>(make<Real>((convert<Real>(operand1)->get_value())));
 }
@@ -683,6 +721,17 @@ Operand::pointer_type realSqrtFunc(Operand::pointer_type operand1, Operand::poin
 }
 Operand::pointer_type realTanFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
 	return convert<Operand>(make<Real>(tan(convert<Real>(operand1)->get_value())));
+}
+
+Operand::pointer_type realMaxFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+	return convert<Operand>(make<Real>(max((convert<Real>(operand1)->get_value()), (convert<Real>(operand2)->get_value()))));
+}
+Operand::pointer_type realMinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+	return convert<Operand>(make<Real>(min((convert<Real>(operand1)->get_value()), (convert<Real>(operand2)->get_value()))));
+}
+
+Operand::pointer_type realArctan2Func(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+	return convert<Operand>(make<Real>(atan2((convert<Real>(operand1)->get_value()), (convert<Real>(operand2)->get_value()))));
 }
 
 // Boolean Functions

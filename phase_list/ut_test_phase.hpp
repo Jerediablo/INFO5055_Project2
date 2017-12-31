@@ -15,7 +15,7 @@
 #define TEST_SINGLE_ARG true
 #define TEST_MULTI_ARG true
 
-#define TEST_REAL false
+#define TEST_REAL true
 #define TEST_MIXED false
 
 #define TEST_BOOLEAN true

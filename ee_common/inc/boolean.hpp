@@ -18,8 +18,10 @@ private:
 	value_type	value_;
 public:
 	Boolean(value_type value = true)
-		: value_(value) { }
+		: value_(value) {
+	}
 
+	int opIndex() { return 2; }
 	value_type		get_value() const { return value_; }
 	string_type		to_string() const;
 };

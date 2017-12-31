@@ -16,6 +16,7 @@ Date:		December 14, 2017
 class Operand : public Token {
 public:
 	DEF_POINTER_TYPE(Operand)
+		virtual int opIndex() { return 0; }
 };
 
 
