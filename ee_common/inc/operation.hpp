@@ -17,6 +17,7 @@ public:
 	DEF_POINTER_TYPE(Operation)
 
 	virtual unsigned number_of_args() const = 0;
+	virtual int operationIndex() { return 0; }
 };
 
 

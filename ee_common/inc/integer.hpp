@@ -22,10 +22,9 @@ private:
 	
 public:
 	Integer( value_type value = 0 )
-		: value_(value) {
-	}
+		: value_(value) {}
 
-	int opIndex() { return 0; }
+	int						operandIndex() { return 0; }
 	value_type				get_value() const { return value_; }
 	string_type				to_string() const;
 

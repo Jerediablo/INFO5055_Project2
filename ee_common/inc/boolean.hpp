@@ -21,7 +21,7 @@ public:
 		: value_(value) {
 	}
 
-	int opIndex() { return 2; }
+	int				operandIndex() { return 2; }
 	value_type		get_value() const { return value_; }
 	string_type		to_string() const;
 };

@@ -19,34 +19,64 @@ class Function : public Operation { };
 		};
 
 				/** Absolute value function token. */
-				class Abs : public OneArgFunction {	};
+				class Abs : public OneArgFunction {
+				public:
+					int operationIndex() { return 21; }
+				};
 
 				/** Arccos function token. */
-				class Arccos : public OneArgFunction { };
+				class Arccos : public OneArgFunction {
+				public:
+					int operationIndex() { return 22; }
+				};
 
 				/** Arcsin function token. */
-				class Arcsin : public OneArgFunction { };
+				class Arcsin : public OneArgFunction {
+				public:
+					int operationIndex() { return 23; }
+				};
 
 				/** Arctan function token. */
-				class Arctan : public OneArgFunction { };
+				class Arctan : public OneArgFunction { 
+				public:
+					int operationIndex() { return 24; }
+				};
 
 				/** Ceil function token. */
-				class Ceil : public OneArgFunction { };
+				class Ceil : public OneArgFunction {
+				public:
+					int operationIndex() { return 25; }
+				};
 
 				/** Cos function token. */
-				class Cos : public OneArgFunction {	};
+				class Cos : public OneArgFunction {
+				public:
+					int operationIndex() { return 26; }
+				};
 
 				/** Exp function token. */
-				class Exp : public OneArgFunction {	};
+				class Exp : public OneArgFunction {
+				public:
+					int operationIndex() { return 27; }
+				};
 
 				/** Floor function token. */
-				class Floor : public OneArgFunction { };
+				class Floor : public OneArgFunction {
+				public:
+					int operationIndex() { return 28; }
+				};
 
 				/** Lb function token. */
-				class Lb : public OneArgFunction { };
+				class Lb : public OneArgFunction {
+				public:
+					int operationIndex() { return 29; }
+				};
 
 				/** Ln function token. */
-				class Ln : public OneArgFunction { };
+				class Ln : public OneArgFunction {
+				public:
+					int operationIndex() { return 30; }
+				};
 
 				/** Log function token. */
 				class Log : public OneArgFunction {	};
@@ -55,13 +85,22 @@ class Function : public Operation { };
 				class Result : public OneArgFunction { };
 
 				/** Sin function token. */
-				class Sin : public OneArgFunction {	};
+				class Sin : public OneArgFunction {
+				public:
+					int operationIndex() { return 31; }
+				};
 
 				/** Sqrt function token. */
-				class Sqrt : public OneArgFunction { };
+				class Sqrt : public OneArgFunction {
+				public:
+					int operationIndex() { return 32; }
+				};
 
 				/** Tan function token. */
-				class Tan : public OneArgFunction {	};
+				class Tan : public OneArgFunction {
+				public:
+					int operationIndex() { return 33; }
+				};
 
 		/** Two argument function token base class. */
 		class TwoArgFunction : public Function {
@@ -70,16 +109,28 @@ class Function : public Operation { };
 		};
 
 				/** Arctan two argument function token. */
-				class Arctan2 : public TwoArgFunction {	};
+				class Arctan2 : public TwoArgFunction {
+				public:
+					int operationIndex() { return 36; }
+				};
 
 				/** Max function token. */
-				class Max : public TwoArgFunction {	};
+				class Max : public TwoArgFunction {
+				public:
+					int operationIndex() { return 34; }
+				};
 
 				/** Min function token. */
-				class Min : public TwoArgFunction {	};
+				class Min : public TwoArgFunction {
+				public:
+					int operationIndex() { return 35; }
+				};
 
 				/** Power function token. */
-				class Pow : public TwoArgFunction {	};
+				class Pow : public TwoArgFunction {
+				public:
+					int operationIndex() { return 8; }
+				};
 /*=============================================================
 
 Revision History

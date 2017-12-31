@@ -29,6 +29,7 @@ class Operator : public Operation {
 public:
 	DEF_POINTER_TYPE(Operator)
 	virtual precedence_type get_precedence() const = 0;
+	
 };
 
 		/** Binary operator token base class. */
@@ -43,6 +44,8 @@ public:
 						/** Power token. */
 						class Power : public RAssocOperator {
 							DEF_PRECEDENCE(POWER)
+						public:
+							int operationIndex() { return 8; }
 						};
 
 						/** Assignment token. */
@@ -56,51 +59,71 @@ public:
 					/** Multiplication token. */
 					class Multiplication : public LAssocOperator {
 						DEF_PRECEDENCE(MULTIPLICATIVE)
+					public:
+						int operationIndex() { return 3; }
 					};
 
 					/** Division token. */
 					class Division : public LAssocOperator {
 						DEF_PRECEDENCE(MULTIPLICATIVE)
+					public:
+						int operationIndex() { return 4; }
 					};
 
 					/** Modulus token. */
 					class Modulus : public LAssocOperator {
 						DEF_PRECEDENCE(MULTIPLICATIVE)
+					public:
+						int operationIndex() { return 7; }
 					};
 
 					/** Addition token. */
 					class Addition : public LAssocOperator {
 						DEF_PRECEDENCE(ADDITIVE)
+					public:
+						int operationIndex() { return 5; }
 					};
 
 					/** Subtraction token. */
 					class Subtraction : public LAssocOperator {
 						DEF_PRECEDENCE(ADDITIVE)
+					public:
+						int operationIndex() { return 6; }
 					};
 
 					/** Or token. */
 					class Or : public LAssocOperator {
 						DEF_PRECEDENCE(LOGOR)
+					public:
+						int operationIndex() { return 13; }
 					};
 
 					/** And token. */
 					class And : public LAssocOperator {
 						DEF_PRECEDENCE(LOGAND)
+					public:
+						int operationIndex() { return 10; }
 					};
 
 					/** Xor token. */
 					class Xor : public LAssocOperator {
 						DEF_PRECEDENCE(LOGXOR)
+					public:
+						int operationIndex() { return 14; }
 					};
 
 					/** Nor token. */
 					class Nor : public LAssocOperator {
 						DEF_PRECEDENCE(LOGOR)
+					public:
+						int operationIndex() { return 12; }
 					};
 
 					/** Nand token. */
 					class Nand : public LAssocOperator {
 						DEF_PRECEDENCE(LOGAND)
+					public:
+						int operationIndex() { return 11; }
 					};
 
 					/** Xnor token. */
@@ -111,31 +134,43 @@ public:
 					/** Equality (==) token. */
 					class Equality : public LAssocOperator {
 						DEF_PRECEDENCE(EQUALITY)
+					public:
+						int operationIndex() { return 15; }
 					};
 
 					/** Greater (>) token. */
 					class Greater : public LAssocOperator {
 						DEF_PRECEDENCE(RELATIONAL)
+					public:
+						int operationIndex() { return 17; }
 					};
 
 					/** Greater Equal (>=) token. */
 					class GreaterEqual : public LAssocOperator {
 						DEF_PRECEDENCE(RELATIONAL)
+					public:
+						int operationIndex() { return 18; }
 					};
 
 					/** Inequality (!=) token. */
 					class Inequality : public LAssocOperator {
 						DEF_PRECEDENCE(EQUALITY)
+					public:
+						int operationIndex() { return 16; }
 					};
 
 					/** Less (<) token. */
 					class Less : public LAssocOperator {
 						DEF_PRECEDENCE(RELATIONAL)
+					public:
+						int operationIndex() { return 19; }
 					};
 
 					/** Less Equal (<=) token. */
 					class LessEqual : public LAssocOperator {
 						DEF_PRECEDENCE(RELATIONAL)
+					public:
+						int operationIndex() { return 20; }
 					};
 
 		/** NonAssociative operator token base class. */
@@ -149,13 +184,22 @@ public:
 			};
 
 				/** Negation token. */
-				class Negation : public UnaryOperator {};
+				class Negation : public UnaryOperator {
+				public:
+					int operationIndex() { return 1; }
+				};
 
 				/** Identity token. */
-				class Identity : public UnaryOperator {};
+				class Identity : public UnaryOperator {
+				public:
+					int operationIndex() { return 0; }
+				};
 
 				/** Not token. */
-				class Not : public UnaryOperator {};
+				class Not : public UnaryOperator {
+				public:
+					int operationIndex() { return 9; }
+				};
 
 				/** Postfix operator token base class. */
 				class PostfixOperator : public UnaryOperator {
@@ -163,7 +207,10 @@ public:
 				};
 
 					/** Factorial token. */
-					class Factorial : public PostfixOperator { };
+					class Factorial : public PostfixOperator {
+					public:
+						int operationIndex() { return 2; }
+					};
 
 /*=============================================================
 

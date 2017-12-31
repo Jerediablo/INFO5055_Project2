@@ -150,133 +150,29 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 	int y = 0;	// second operand
 	int z = 0;	// operation
 
+	// These get passed as the parameters for the functions in the lookup table
 	Operand::pointer_type operand1 = convert<Operand>(operandStack.top());
 	Operand::pointer_type operand2;
 
-	x = operand1->opIndex();
+	// Determine the type of the first operand, and use it as the first index in the lookup table
+	x = convert<Operand>(operandStack.top())->operandIndex();
 
+	// Remove the first operand from the operand stack
 	operandStack.pop();
 
+	// If there is still something in the operand stack, it means the operation takes a second operand
 	if (operandStack.size() != 0) {
+
+		// Determine the type of the second operand, and use it as the second index in the lookup table
 		operand2 = convert<Operand>(operandStack.top());
-		y = operand2->opIndex();
+		y = operand2->operandIndex();
 	}
 
-	if (is<Identity>(operation)) {
-		z = 0;
-	}
-	else if (is<Negation>(operation)) {
-		z = 1;
-	}
-	else if (is<Factorial>(operation)) {
-		z = 2;
-	}
-	else if (is<Multiplication>(operation)) {
-		z = 3;
-	}
-	else if (is<Division>(operation)) {
-		z = 4;
-	}
-	else if (is<Addition>(operation)) {
-		z = 5;
-	}
-	else if (is<Subtraction>(operation)) {
-		z = 6;
-	}
-	else if (is<Modulus>(operation)) {
-		z = 7;
-	}
-	else if (is<Power>(operation) || is<Pow>(operation)) {
-		z = 8;
-	}
-	else if (is<Not>(operation)) {
-		z = 9;
-	}
-	else if (is<And>(operation)) {
-		z = 10;
-	}
-	else if (is<Nand>(operation)) {
-		z = 11;
-	}
-	else if (is<Nor>(operation)) {
-		z = 12;
-	}
-	else if (is<Or>(operation)) {
-		z = 13;
-	}
-	else if (is<Xor>(operation)) {
-		z = 14;
-	}
-	else if (is<Equality>(operation)) {
-		z = 15;
-	}
-	else if (is<Inequality>(operation)) {
-		z = 16;
-	}
-	else if (is<Greater>(operation)) {
-		z = 17;
-	}
-	else if (is<GreaterEqual>(operation)) {
-		z = 18;
-	}
-	else if (is<Less>(operation)) {
-		z = 19;
-	}
-	else if (is<LessEqual>(operation)) {
-		z = 20;
-	}
-	else if (is<Abs>(operation)) {
-		z = 21;
-	}
-	else if (is<Arccos>(operation)) {
-		z = 22;
-	}
-	else if (is<Arcsin>(operation)) {
-		z = 23;
-	}
-	else if (is<Arctan>(operation)) {
-		z = 24;
-	}
-	else if (is<Ceil>(operation)) {
-		z = 25;
-	}
-	else if (is<Cos>(operation)) {
-		z = 26;
-	}
-	else if (is<Exp>(operation)) {
-		z = 27;
-	}
-	else if (is<Floor>(operation)) {
-		z = 28;
-	}
-	else if (is<Lb>(operation)) {
-		z = 29;
-	}
-	else if (is<Ln>(operation)) {
-		z = 30;
-	}
-	else if (is<Sin>(operation)) {
-		z = 31;
-	}
-	else if (is<Sqrt>(operation)) {
-		z = 32;
-	}
-	else if (is<Tan>(operation)) {
-		z = 33;
-	}
-	else if (is<Max>(operation)) {
-		z = 34;
-	}
-	else if (is<Min>(operation)) {
-		z = 35;
-	}
-	else if (is<Arctan2>(operation)) {
-		z = 36;
-	}
-
-
+	// Determine the type of the operatino, and use it as the third index in the lookup table
+	z = convert<Operation>(operation)->operationIndex();
 	
-	FunctionPointer lookupTable[3][3][37] =
+	// Lookup Table
+	FunctionPointer lookupTable[NUMBER_OF_OPERANDS][NUMBER_OF_OPERANDS][NUMBER_OF_OPERATIONS] =
 	{
 		/*Operand 1 is Int*/{
 			/*Operand 2 is Int (or nothing)*/{

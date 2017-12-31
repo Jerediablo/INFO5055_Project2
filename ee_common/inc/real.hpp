@@ -20,9 +20,9 @@ public:
 private:
 	value_type	value_;
 public:
-	Real( value_type value = value_type(0) ) : value_( value ) { 
-	}
-	int opIndex() { return 1; }
+	Real( value_type value = value_type(0) ) : value_( value ) {}
+
+	int						operandIndex() { return 1; }
 	value_type				get_value() const { return value_; }
 	string_type				to_string() const;
 };

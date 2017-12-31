@@ -28,6 +28,9 @@ public:
 	Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Token::pointer_type const& operation);
 };
 
+// Constants
+constexpr int NUMBER_OF_OPERANDS = 3;
+constexpr int NUMBER_OF_OPERATIONS = 37;
 
 /*=============================================================
 
