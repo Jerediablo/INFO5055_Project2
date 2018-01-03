@@ -10,6 +10,13 @@
 
 #include "../inc/expression_evaluator.hpp"
 
+ExpressionEvaluator::result_type ExpressionEvaluator::evaluate(ExpressionEvaluator::expression_type const & expr)
+{
+	TokenList list = ExpressionEvaluator::tokenizer_.tokenize(expr);
+	TokenList parsedList = ExpressionEvaluator::parser_.parse(list);
+	ExpressionEvaluator::result_type result = ExpressionEvaluator::rpn_.evaluate(parsedList);
+	return result; 
+}
 
 /*=============================================================
 
@@ -30,3 +37,4 @@ or in accordance with the terms and conditions
 stipulated in the agreement/contract under which
 the program(s) have been supplied.
 =============================================================*/
+

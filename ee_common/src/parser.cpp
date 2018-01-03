@@ -91,6 +91,7 @@ TokenList Parser::parse(TokenList const& infixTokens) {
 		postfixTokens.push_back(stack.top());
 		stack.pop();
 	}
+
 	return postfixTokens; // return output queue
 }
 

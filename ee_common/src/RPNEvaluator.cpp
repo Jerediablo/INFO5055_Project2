@@ -62,6 +62,7 @@ Operand::pointer_type realAdditionFunc(Operand::pointer_type operand1, Operand::
 Operand::pointer_type realSubtractionFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type realModulusFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type realPowerFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
+Operand::pointer_type realIntPowerFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type realEqualityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type realInequalityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type realGreaterFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
@@ -94,6 +95,7 @@ Operand::pointer_type boolNandFunc(Operand::pointer_type operand1, Operand::poin
 Operand::pointer_type boolNorFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type boolOrFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type boolXorFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
+Operand::pointer_type boolXnorFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type boolEqualityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type boolInequalityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 Operand::pointer_type boolGreaterFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
@@ -126,7 +128,7 @@ Operand::pointer_type RPNEvaluator::evaluate(TokenList const& rpnExpression) {
 			
 			// lookup table to find result
 			Operand::pointer_type result = get_result(calcStack, operation);
-			return result;
+			operandStack.push(result);
 		}
 	}
 	
@@ -170,12 +172,12 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 
 	// Determine the type of the operatino, and use it as the third index in the lookup table
 	z = convert<Operation>(operation)->operationIndex();
-	
+
 	// Lookup Table
 	FunctionPointer lookupTable[NUMBER_OF_OPERANDS][NUMBER_OF_OPERANDS][NUMBER_OF_OPERATIONS] =
 	{
-		/*Operand 1 is Int*/{
-			/*Operand 2 is Int (or nothing)*/{
+		/* x = 0 Operand 1 is Int*/{
+			/* y = 0 Operand 2 is Int (or nothing)*/{
 				/*z = 0*/	intIdentityFunc,
 				/*z = 1*/	intNegationFunc,
 				/*z = 2*/	intFactorialFunc,
@@ -212,11 +214,11 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 33*/	realTanFunc, 
 				/*z = 34*/	intMaxFunc, 
 				/*z = 35*/	intMinFunc, },
-			/*Operand 2 is Real*/{  },
-			/*Operand 2 is Bool*/{  }
+			/* y = 1 Operand 2 is Real*/{  },
+			/* y = 2 Operand 2 is Bool*/{  }
 		},
-		/*Operand 1 is Real*/{
-			/*Operand 2 is Int (or nothing)*/{
+		/* x = 1 Operand 1 is Real*/{
+			/* y = 0 Operand 2 is Int (or nothing)*/{
 				/*z = 0*/	realIdentityFunc,
 				/*z = 1*/	realNegationFunc,
 				/*z = 2*/	realFactorialFunc,
@@ -225,7 +227,7 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 5*/	realAdditionFunc,
 				/*z = 6*/	realSubtractionFunc,
 				/*z = 7*/	realModulusFunc,
-				/*z = 8*/	realPowerFunc,
+				/*z = 8*/	realIntPowerFunc,
 				/*z = 9*/	boolNotFunc,
 				/*z = 10*/	boolAndFunc,
 				/*z = 11*/	boolNandFunc,
@@ -251,7 +253,7 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 31*/	realSinFunc,
 				/*z = 32*/	realSqrtFunc,
 				/*z = 33*/	realTanFunc },
-			/*Operand 2 is Real*/{ 
+			/* y = 1 Operand 2 is Real*/{ 
 				/*z = 0*/	realIdentityFunc,
 				/*z = 1*/	realNegationFunc,
 				/*z = 2*/	realFactorialFunc,
@@ -289,10 +291,10 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 34*/	realMaxFunc,
 				/*z = 35*/	realMinFunc, 
 				/*z = 36*/	realArctan2Func },
-			/*Operand 2 is Bool*/{}
+			/* y= 2 Operand 2 is Bool*/{}
 		},
-		/*Operand 1 is Bool*/{
-			/*Operand 2 is Int*/{
+		/* x = 2 Operand 1 is Bool*/{
+			/* y = 0 Operand 2 is Int*/{
 				/*z = 0*/	intIdentityFunc,
 				/*z = 1*/	intNegationFunc,
 				/*z = 2*/	intFactorialFunc,
@@ -303,8 +305,8 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 7*/	intModulusFunc,
 				/*z = 8*/	intPowerFunc,
 				/*z = 9*/	boolNotFunc },
-			/*Operand 2 is Real*/{},
-			/*Operand 2 is Bool*/{
+			/*y = 1 Operand 2 is Real*/{},
+			/*y = 2 Operand 2 is Bool*/{
 				/*z = 0*/	intIdentityFunc,
 				/*z = 1*/	intNegationFunc,
 				/*z = 2*/	intFactorialFunc,
@@ -325,7 +327,24 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 17*/	boolGreaterFunc,
 				/*z = 18*/	boolGreaterEqualFunc,
 				/*z = 19*/	boolLessFunc,
-				/*z = 20*/	boolLessEqualFunc}
+				/*z = 20*/	boolLessEqualFunc,
+				/*z = 21*/	intAbsoluteFunc,
+				/*z = 22*/	realArccosFunc,
+				/*z = 23*/	realArcsinFunc,
+				/*z = 24*/	realArctanFunc,
+				/*z = 25*/	realCeilFunc,
+				/*z = 26*/	realCosFunc,
+				/*z = 27*/	realExpFunc,
+				/*z = 28*/	realFloorFunc,
+				/*z = 29*/	realLbFunc,
+				/*z = 30*/	realLnFunc,
+				/*z = 31*/	realSinFunc,
+				/*z = 32*/	realSqrtFunc,
+				/*z = 33*/	realTanFunc,
+				/*z = 34*/	realMaxFunc,
+				/*z = 35*/	realMinFunc,
+				/*z = 36*/	realArctan2Func,
+				/*z = 37*/	boolXnorFunc }
 		}
 	};
 
@@ -504,14 +523,20 @@ Operand::pointer_type realModulusFunc(Operand::pointer_type operand1, Operand::p
 }
 
 Operand::pointer_type realPowerFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+
+	return convert<Operand>(make<Real>(pow((convert<Real>(operand1)->get_value()), (convert<Real>(operand2)->get_value()))));
+}
+
+Operand::pointer_type realIntPowerFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
 	Real::value_type ans = (convert<Real>(operand1)->get_value());
 	Real::value_type initVal = (convert<Real>(operand1)->get_value());
-	Real::value_type count = (convert<Real>(operand2)->get_value());
+	Integer::value_type count = (convert<Integer>(operand2)->get_value());
 	while (count > 1) {
 		ans *= initVal;
 		count--;
 	}
 	return convert<Operand>(make<Real>(ans));
+	
 }
 
 Operand::pointer_type realEqualityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
@@ -638,11 +663,21 @@ Operand::pointer_type boolNotFunc(Operand::pointer_type operand1, Operand::point
 Operand::pointer_type boolAndFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
 	Boolean::value_type op1;
 	Boolean::value_type op2;
-	
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
 
-	
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2= true;
+	else if (is<False>(operand2))
+		op2 = false;
+
+
 	if (op1 == true && op2 == true) {
 		return convert<Operand>(make<Boolean>(true));
 	}
@@ -655,8 +690,18 @@ Operand::pointer_type boolNandFunc(Operand::pointer_type operand1, Operand::poin
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if (op1 == true && op2 == true)
 		return convert<Operand>(make<Boolean>(false));
@@ -668,10 +713,43 @@ Operand::pointer_type boolNorFunc(Operand::pointer_type operand1, Operand::point
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if (op1 == false && op2 == false)
+		return convert<Operand>(make<Boolean>(true));
+	else
+		return convert<Operand>(make<Boolean>(false));
+}
+
+Operand::pointer_type boolXnorFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+	Boolean::value_type op1;
+	Boolean::value_type op2;
+
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
+
+	if ((op1 == false && op2 == false) || (op1 == true && op2 == true))
 		return convert<Operand>(make<Boolean>(true));
 	else
 		return convert<Operand>(make<Boolean>(false));
@@ -681,8 +759,18 @@ Operand::pointer_type boolOrFunc(Operand::pointer_type operand1, Operand::pointe
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if (op1 == true || op2 == true)
 		return convert<Operand>(make<Boolean>(true));
@@ -694,8 +782,18 @@ Operand::pointer_type boolXorFunc(Operand::pointer_type operand1, Operand::point
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if ((op1 == true || op2 == true) && (op1 != op2))
 		return convert<Operand>(make<Boolean>(true));
@@ -707,8 +805,18 @@ Operand::pointer_type boolEqualityFunc(Operand::pointer_type operand1, Operand::
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if (op1 == op2)
 		return convert<Operand>(make<Boolean>(true));
@@ -720,8 +828,18 @@ Operand::pointer_type boolInequalityFunc(Operand::pointer_type operand1, Operand
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if (op1 != op2)
 		return convert<Operand>(make<Boolean>(true));
@@ -733,8 +851,18 @@ Operand::pointer_type boolGreaterFunc(Operand::pointer_type operand1, Operand::p
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if (op1 > op2)
 		return convert<Operand>(make<Boolean>(true));
@@ -746,8 +874,18 @@ Operand::pointer_type boolGreaterEqualFunc(Operand::pointer_type operand1, Opera
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if (op1 >= op2)
 		return convert<Operand>(make<Boolean>(true));
@@ -759,8 +897,18 @@ Operand::pointer_type boolLessFunc(Operand::pointer_type operand1, Operand::poin
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if (op1 < op2)
 		return convert<Operand>(make<Boolean>(true));
@@ -772,8 +920,18 @@ Operand::pointer_type boolLessEqualFunc(Operand::pointer_type operand1, Operand:
 	Boolean::value_type op1;
 	Boolean::value_type op2;
 
-	(is<True>(operand1)) ? op1 = true : op1 = false;
-	(is<True>(operand2)) ? op2 = true : op2 = false;
+	op1 = convert<Boolean>(operand1)->get_value();
+	op2 = convert<Boolean>(operand2)->get_value();
+
+	if (is<True>(operand1))
+		op1 = true;
+	else if (is<False>(operand1))
+		op1 = false;
+
+	if (is<True>(operand2))
+		op2 = true;
+	else if (is<False>(operand2))
+		op2 = false;
 
 	if (op1 <= op2)
 		return convert<Operand>(make<Boolean>(true));

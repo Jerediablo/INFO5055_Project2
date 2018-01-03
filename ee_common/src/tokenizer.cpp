@@ -248,16 +248,18 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 				if (*currentChar == '=') {
 					tokenizedExpression.push_back(make<Inequality>());
 					++currentChar;
+					continue;
 				}
 			}
 			// Make sure factorial comes after something else
-			else if (tokenizedExpression.size() == 0) {
+			if (tokenizedExpression.size() == 0) {
 				throw XBadCharacter(expression, currentChar - begin(expression), "Factorial must follow Expression");
 			}
 			else if (is<RightParenthesis>(tokenizedExpression.back()) || is<Operand>(tokenizedExpression.back())
 				|| is<PostfixOperator>(tokenizedExpression.back())) {
 
 				tokenizedExpression.push_back(make<Factorial>());
+				
 			}
 			else {
 				throw XBadCharacter(expression, currentChar - begin(expression), "Factorial must follow Expression");

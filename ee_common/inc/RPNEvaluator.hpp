@@ -30,7 +30,7 @@ public:
 
 // Constants
 constexpr int NUMBER_OF_OPERANDS = 3;
-constexpr int NUMBER_OF_OPERATIONS = 37;
+constexpr int NUMBER_OF_OPERATIONS = 38;
 
 /*=============================================================
 

@@ -129,6 +129,8 @@ public:
 					/** Xnor token. */
 					class Xnor : public LAssocOperator {
 						DEF_PRECEDENCE(LOGXOR)
+					public:
+						int operationIndex() { return 37; }
 					};
 
 					/** Equality (==) token. */
