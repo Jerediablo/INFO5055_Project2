@@ -17,15 +17,17 @@ using namespace std;
 
 
 int main() {
-	cout << "Expression Evaluator, (c) 1998-2017 Garth Santor\n";
+	cout << "Expression Evaluator, (c) 1998-2017 Garth Santor / Jeremy Peterson-Katz\n";
 
-	for (unsigned count = 0; ; ++count) {
+	for (unsigned count = 1; ; ++count) {
 		cout << "> ";
 		string command;
 		if (!getline(cin, command) || command.empty())
 			break;
 
-		cout << "[" << count << "] = " << 42 << endl;
+		ExpressionEvaluator ee;
+		ExpressionEvaluator::result_type ans = ee.evaluate(command);
+		cout << "[" << count << "] = " << ans << endl;
 	}
 }
 

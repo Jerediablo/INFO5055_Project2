@@ -51,6 +51,8 @@ public:
 						/** Assignment token. */
 						class Assignment : public RAssocOperator {
 							DEF_PRECEDENCE(ASSIGNMENT)
+						public:
+							int operationIndex() { return 38; }
 						};
 
 				/** Left-associative operator base class. */

@@ -360,6 +360,7 @@ TokenList Tokenizer::tokenize( string_type const& expression ) {
 		throw XBadCharacter(expression, currentChar - begin(expression));
 	}
 
+	
 	return tokenizedExpression;
 }
 

@@ -18,6 +18,8 @@ private:
 	value_type	value_;
 public:
 	Variable() {}
+
+	int						operandIndex() { return 3; }
 	void					set_value(value_type const& setVal) {value_ = setVal; }
 	value_type				get_value() const { return value_; }
 	string_type				to_string() const;

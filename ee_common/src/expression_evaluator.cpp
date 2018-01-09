@@ -6,14 +6,22 @@
 	@note Compiles under Visual C++ v110
 
 	@brief ExpressionEvaluator class implementation.
+
+	@implemented by Jeremy Peterson-Katz
+	@date 2018-01-12
 	*/
 
 #include "../inc/expression_evaluator.hpp"
 
 ExpressionEvaluator::result_type ExpressionEvaluator::evaluate(ExpressionEvaluator::expression_type const & expr)
 {
+	// Tokenize the expression
 	TokenList list = ExpressionEvaluator::tokenizer_.tokenize(expr);
+
+	// Parse the tokenised list, making it RPN
 	TokenList parsedList = ExpressionEvaluator::parser_.parse(list);
+
+	// Evaluate the parsed list, returning a result
 	ExpressionEvaluator::result_type result = ExpressionEvaluator::rpn_.evaluate(parsedList);
 	return result; 
 }

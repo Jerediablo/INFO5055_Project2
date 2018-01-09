@@ -1,5 +1,7 @@
-Project 2: Expression Evaluator - Part 1
+Project 3: Expression Evaluator - Part 2
 By: Jeremy Peterson-Katz
 ===========================================
 
-Implemented all features.
+Solution Implemented: Lookup Table
+
+Implemented all features except Mixed, Variable, and Result.

@@ -9,6 +9,9 @@
 	@note Compiles under Visual C++ v110
 
 	@brief ExpressionEvaluator class declaration.
+
+	@implemented by Jeremy Peterson-Katz
+	@date 2018-01-12
 	*/
 
 #include "token.hpp"

@@ -6,6 +6,9 @@
 	@note Compiles under Visual C++ v110
 
 	@brief RPN Evaluator class implementation.
+
+	@implemented by Jeremy Peterson-Katz
+	@date 2018-01-12
 	*/
 
 #include "../inc/RPNEvaluator.hpp"
@@ -23,85 +26,8 @@
 #include <cmath>
 using namespace std;
 
-// function declaration
-Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Token::pointer_type const& operation);
-
 using FunctionPointer = Operand::pointer_type(*)(Operand::pointer_type, Operand::pointer_type);
 
-
-
-// Operation functions declarations
-// Integer Functions
-Operand::pointer_type intIdentityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intNegationFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intFactorialFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intMultiplicationFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intDivisionFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intAdditionFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intSubtractionFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intModulusFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intPowerFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intEqualityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intInequalityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intGreaterFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intGreaterEqualFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intLessFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intLessEqualFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intAbsoluteFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intMaxFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type intMinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-
-
-// Real Functions
-Operand::pointer_type realIdentityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realNegationFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realFactorialFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realMultiplicationFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realDivisionFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realAdditionFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realSubtractionFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realModulusFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realPowerFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realIntPowerFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realEqualityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realInequalityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realGreaterFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realGreaterEqualFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realLessFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realLessEqualFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realAbsoluteFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realArccosFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realArcsinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realArctanFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realCeilFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realCosFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realExpFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realFloorFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realLbFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realLnFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realSinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realSqrtFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realTanFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realMaxFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realMinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type realArctan2Func(Operand::pointer_type operand1, Operand::pointer_type operand2);
-
-
-
-// Boolean Functions
-Operand::pointer_type boolNotFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolAndFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolNandFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolNorFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolOrFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolXorFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolXnorFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolEqualityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolInequalityFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolGreaterFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolGreaterEqualFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolLessFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
-Operand::pointer_type boolLessEqualFunc(Operand::pointer_type operand1, Operand::pointer_type operand2);
 
 Operand::pointer_type RPNEvaluator::evaluate(TokenList const& rpnExpression) {
 
@@ -127,7 +53,7 @@ Operand::pointer_type RPNEvaluator::evaluate(TokenList const& rpnExpression) {
 			}
 			
 			// lookup table to find result
-			Operand::pointer_type result = get_result(calcStack, operation);
+			Operand::pointer_type result = RPNEvaluator::get_result(calcStack, operation);
 			operandStack.push(result);
 		}
 	}
@@ -146,7 +72,7 @@ Operand::pointer_type RPNEvaluator::evaluate(TokenList const& rpnExpression) {
 	return answer; 
 }
 
-Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Token::pointer_type const& operation) {
+Operand::pointer_type RPNEvaluator::get_result(stack<Token::pointer_type> & operandStack, Token::pointer_type const& operation) {
 
 	int x = 0;	// first operand
 	int y = 0;	// second operand
@@ -173,6 +99,9 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 	// Determine the type of the operatino, and use it as the third index in the lookup table
 	z = convert<Operation>(operation)->operationIndex();
 
+	/* IF THE COMBINATION OF OPERANDS AND OPERATION DOES NOT WORK (INCLUDING COMBINATIONS NOT 
+		IMPLEMENTED, SUCH AS A MIX OF INTEGER AND REAL OPERANDS) GO TO ERRORFUNC AND RETURN 0*/
+
 	// Lookup Table
 	FunctionPointer lookupTable[NUMBER_OF_OPERANDS][NUMBER_OF_OPERANDS][NUMBER_OF_OPERATIONS] =
 	{
@@ -187,12 +116,12 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 6*/	intSubtractionFunc,
 				/*z = 7*/	intModulusFunc,
 				/*z = 8*/	intPowerFunc,
-				/*z = 9*/	boolNotFunc,
-				/*z = 10*/	boolAndFunc,
-				/*z = 11*/	boolNandFunc,
-				/*z = 12*/	boolNorFunc,
-				/*z = 13*/	boolOrFunc,
-				/*z = 14*/	boolXorFunc,
+				/*z = 9*/	errorFunc,
+				/*z = 10*/	errorFunc,
+				/*z = 11*/	errorFunc,
+				/*z = 12*/	errorFunc,
+				/*z = 13*/	errorFunc,
+				/*z = 14*/	errorFunc,
 				/*z = 15*/	intEqualityFunc,
 				/*z = 16*/	intInequalityFunc,
 				/*z = 17*/	intGreaterFunc,
@@ -200,22 +129,94 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 19*/	intLessFunc,
 				/*z = 20*/	intLessEqualFunc,
 				/*z = 21*/	intAbsoluteFunc,
-				/*z = 22*/	realArccosFunc,
-				/*z = 23*/	realArcsinFunc,
-				/*z = 24*/	realArctanFunc,
-				/*z = 25*/	realCeilFunc,
-				/*z = 26*/	realCosFunc,
-				/*z = 27*/	realExpFunc,
-				/*z = 28*/	realFloorFunc,
-				/*z = 29*/	realLbFunc,
-				/*z = 30*/	realLnFunc,
-				/*z = 31*/	realSinFunc,
-				/*z = 32*/	realSqrtFunc,
-				/*z = 33*/	realTanFunc, 
+				/*z = 22*/	errorFunc,
+				/*z = 23*/	errorFunc,
+				/*z = 24*/	errorFunc,
+				/*z = 25*/	errorFunc,
+				/*z = 26*/	errorFunc,
+				/*z = 27*/	errorFunc,
+				/*z = 28*/	errorFunc,
+				/*z = 29*/	errorFunc,
+				/*z = 30*/	errorFunc,
+				/*z = 31*/	errorFunc,
+				/*z = 32*/	errorFunc,
+				/*z = 33*/	errorFunc,
 				/*z = 34*/	intMaxFunc, 
 				/*z = 35*/	intMinFunc, },
-			/* y = 1 Operand 2 is Real*/{  },
-			/* y = 2 Operand 2 is Bool*/{  }
+			/* y = 1 Operand 2 is Real*/{ 
+				/*z = 0*/	errorFunc,
+				/*z = 1*/	errorFunc,
+				/*z = 2*/	errorFunc,
+				/*z = 3*/	errorFunc,
+				/*z = 4*/	errorFunc,
+				/*z = 5*/	errorFunc,
+				/*z = 6*/	errorFunc,
+				/*z = 7*/	errorFunc,
+				/*z = 8*/	errorFunc,
+				/*z = 9*/	errorFunc,
+				/*z = 10*/	errorFunc,
+				/*z = 11*/	errorFunc,
+				/*z = 12*/	errorFunc,
+				/*z = 13*/	errorFunc,
+				/*z = 14*/	errorFunc,
+				/*z = 15*/	errorFunc,
+				/*z = 16*/	errorFunc,
+				/*z = 17*/	errorFunc,
+				/*z = 18*/	errorFunc,
+				/*z = 19*/	errorFunc,
+				/*z = 20*/	errorFunc,
+				/*z = 21*/	errorFunc,
+				/*z = 22*/	errorFunc,
+				/*z = 23*/	errorFunc,
+				/*z = 24*/	errorFunc,
+				/*z = 25*/	errorFunc,
+				/*z = 26*/	errorFunc,
+				/*z = 27*/	errorFunc,
+				/*z = 28*/	errorFunc,
+				/*z = 29*/	errorFunc,
+				/*z = 30*/	errorFunc,
+				/*z = 31*/	errorFunc,
+				/*z = 32*/	errorFunc,
+				/*z = 33*/	errorFunc,
+				/*z = 34*/	errorFunc,
+				/*z = 35*/	errorFunc, },
+			/* y = 2 Operand 2 is Bool*/{ 
+				/*z = 0*/	errorFunc,
+				/*z = 1*/	errorFunc,
+				/*z = 2*/	errorFunc,
+				/*z = 3*/	errorFunc,
+				/*z = 4*/	errorFunc,
+				/*z = 5*/	errorFunc,
+				/*z = 6*/	errorFunc,
+				/*z = 7*/	errorFunc,
+				/*z = 8*/	errorFunc,
+				/*z = 9*/	errorFunc,
+				/*z = 10*/	errorFunc,
+				/*z = 11*/	errorFunc,
+				/*z = 12*/	errorFunc,
+				/*z = 13*/	errorFunc,
+				/*z = 14*/	errorFunc,
+				/*z = 15*/	errorFunc,
+				/*z = 16*/	errorFunc,
+				/*z = 17*/	errorFunc,
+				/*z = 18*/	errorFunc,
+				/*z = 19*/	errorFunc,
+				/*z = 20*/	errorFunc,
+				/*z = 21*/	errorFunc,
+				/*z = 22*/	errorFunc,
+				/*z = 23*/	errorFunc,
+				/*z = 24*/	errorFunc,
+				/*z = 25*/	errorFunc,
+				/*z = 26*/	errorFunc,
+				/*z = 27*/	errorFunc,
+				/*z = 28*/	errorFunc,
+				/*z = 29*/	errorFunc,
+				/*z = 30*/	errorFunc,
+				/*z = 31*/	errorFunc,
+				/*z = 32*/	errorFunc,
+				/*z = 33*/	errorFunc,
+				/*z = 34*/	errorFunc,
+				/*z = 35*/	errorFunc, }
 		},
 		/* x = 1 Operand 1 is Real*/{
 			/* y = 0 Operand 2 is Int (or nothing)*/{
@@ -228,12 +229,12 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 6*/	realSubtractionFunc,
 				/*z = 7*/	realModulusFunc,
 				/*z = 8*/	realIntPowerFunc,
-				/*z = 9*/	boolNotFunc,
-				/*z = 10*/	boolAndFunc,
-				/*z = 11*/	boolNandFunc,
-				/*z = 12*/	boolNorFunc,
-				/*z = 13*/	boolOrFunc,
-				/*z = 14*/	boolXorFunc,
+				/*z = 9*/	errorFunc,
+				/*z = 10*/	errorFunc,
+				/*z = 11*/	errorFunc,
+				/*z = 12*/	errorFunc,
+				/*z = 13*/	errorFunc,
+				/*z = 14*/	errorFunc,
 				/*z = 15*/	realEqualityFunc,
 				/*z = 16*/	realInequalityFunc,
 				/*z = 17*/	realGreaterFunc,
@@ -263,19 +264,19 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 6*/	realSubtractionFunc,
 				/*z = 7*/	realModulusFunc,
 				/*z = 8*/	realPowerFunc,
-				/*z = 9*/	boolNotFunc,
-				/*z = 10*/	boolAndFunc,
-				/*z = 11*/	boolNandFunc,
-				/*z = 12*/	boolNorFunc,
-				/*z = 13*/	boolOrFunc,
-				/*z = 14*/	boolXorFunc,
+				/*z = 9*/	errorFunc,
+				/*z = 10*/	errorFunc,
+				/*z = 11*/	errorFunc,
+				/*z = 12*/	errorFunc,
+				/*z = 13*/	errorFunc,
+				/*z = 14*/	errorFunc,
 				/*z = 15*/	realEqualityFunc,
 				/*z = 16*/	realInequalityFunc,
 				/*z = 17*/	realGreaterFunc,
 				/*z = 18*/	realGreaterEqualFunc,
 				/*z = 19*/	realLessFunc,
 				/*z = 20*/	realLessEqualFunc, 
-				/*z = 21*/	intAbsoluteFunc,
+				/*z = 21*/	errorFunc,
 				/*z = 22*/	realArccosFunc,
 				/*z = 23*/	realArcsinFunc,
 				/*z = 24*/	realArctanFunc,
@@ -291,31 +292,103 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 34*/	realMaxFunc,
 				/*z = 35*/	realMinFunc, 
 				/*z = 36*/	realArctan2Func },
-			/* y= 2 Operand 2 is Bool*/{}
+			/* y= 2 Operand 2 is Bool*/{
+				/*z = 0*/	errorFunc,
+				/*z = 1*/	errorFunc,
+				/*z = 2*/	errorFunc,
+				/*z = 3*/	errorFunc,
+				/*z = 4*/	errorFunc,
+				/*z = 5*/	errorFunc,
+				/*z = 6*/	errorFunc,
+				/*z = 7*/	errorFunc,
+				/*z = 8*/	errorFunc,
+				/*z = 9*/	errorFunc,
+				/*z = 10*/	errorFunc,
+				/*z = 11*/	errorFunc,
+				/*z = 12*/	errorFunc,
+				/*z = 13*/	errorFunc,
+				/*z = 14*/	errorFunc,
+				/*z = 15*/	errorFunc,
+				/*z = 16*/	errorFunc,
+				/*z = 17*/	errorFunc,
+				/*z = 18*/	errorFunc,
+				/*z = 19*/	errorFunc,
+				/*z = 20*/	errorFunc,
+				/*z = 21*/	errorFunc,
+				/*z = 22*/	errorFunc,
+				/*z = 23*/	errorFunc,
+				/*z = 24*/	errorFunc,
+				/*z = 25*/	errorFunc,
+				/*z = 26*/	errorFunc,
+				/*z = 27*/	errorFunc,
+				/*z = 28*/	errorFunc,
+				/*z = 29*/	errorFunc,
+				/*z = 30*/	errorFunc,
+				/*z = 31*/	errorFunc,
+				/*z = 32*/	errorFunc,
+				/*z = 33*/	errorFunc,
+				/*z = 34*/	errorFunc,
+				/*z = 35*/	errorFunc, }
 		},
 		/* x = 2 Operand 1 is Bool*/{
 			/* y = 0 Operand 2 is Int*/{
-				/*z = 0*/	intIdentityFunc,
-				/*z = 1*/	intNegationFunc,
-				/*z = 2*/	intFactorialFunc,
-				/*z = 3*/	intMultiplicationFunc,
-				/*z = 4*/	intDivisionFunc,
-				/*z = 5*/	intAdditionFunc,
-				/*z = 6*/	intSubtractionFunc,
-				/*z = 7*/	intModulusFunc,
-				/*z = 8*/	intPowerFunc,
+				/*z = 0*/	errorFunc,
+				/*z = 1*/	errorFunc,
+				/*z = 2*/	errorFunc,
+				/*z = 3*/	errorFunc,
+				/*z = 4*/	errorFunc,
+				/*z = 5*/	errorFunc,
+				/*z = 6*/	errorFunc,
+				/*z = 7*/	errorFunc,
+				/*z = 8*/	errorFunc,
 				/*z = 9*/	boolNotFunc },
-			/*y = 1 Operand 2 is Real*/{},
+			/*y = 1 Operand 2 is Real*/{	
+				/*z = 0*/	errorFunc,
+				/*z = 1*/	errorFunc,
+				/*z = 2*/	errorFunc,
+				/*z = 3*/	errorFunc,
+				/*z = 4*/	errorFunc,
+				/*z = 5*/	errorFunc,
+				/*z = 6*/	errorFunc,
+				/*z = 7*/	errorFunc,
+				/*z = 8*/	errorFunc,
+				/*z = 9*/	errorFunc,
+				/*z = 10*/	errorFunc,
+				/*z = 11*/	errorFunc,
+				/*z = 12*/	errorFunc,
+				/*z = 13*/	errorFunc,
+				/*z = 14*/	errorFunc,
+				/*z = 15*/	errorFunc,
+				/*z = 16*/	errorFunc,
+				/*z = 17*/	errorFunc,
+				/*z = 18*/	errorFunc,
+				/*z = 19*/	errorFunc,
+				/*z = 20*/	errorFunc,
+				/*z = 21*/	errorFunc,
+				/*z = 22*/	errorFunc,
+				/*z = 23*/	errorFunc,
+				/*z = 24*/	errorFunc,
+				/*z = 25*/	errorFunc,
+				/*z = 26*/	errorFunc,
+				/*z = 27*/	errorFunc,
+				/*z = 28*/	errorFunc,
+				/*z = 29*/	errorFunc,
+				/*z = 30*/	errorFunc,
+				/*z = 31*/	errorFunc,
+				/*z = 32*/	errorFunc,
+				/*z = 33*/	errorFunc,
+				/*z = 34*/	errorFunc,
+				/*z = 35*/	errorFunc, },
 			/*y = 2 Operand 2 is Bool*/{
-				/*z = 0*/	intIdentityFunc,
-				/*z = 1*/	intNegationFunc,
-				/*z = 2*/	intFactorialFunc,
-				/*z = 3*/	intMultiplicationFunc,
-				/*z = 4*/	intDivisionFunc,
-				/*z = 5*/	intAdditionFunc,
-				/*z = 6*/	intSubtractionFunc,
-				/*z = 7*/	intModulusFunc,
-				/*z = 8*/	intPowerFunc,
+				/*z = 0*/	errorFunc,
+				/*z = 1*/	errorFunc,
+				/*z = 2*/	errorFunc,
+				/*z = 3*/	errorFunc,
+				/*z = 4*/	errorFunc,
+				/*z = 5*/	errorFunc,
+				/*z = 6*/	errorFunc,
+				/*z = 7*/	errorFunc,
+				/*z = 8*/	errorFunc,
 				/*z = 9*/	boolNotFunc,
 				/*z = 10*/	boolAndFunc,
 				/*z = 11*/	boolNandFunc,
@@ -328,22 +401,22 @@ Operand::pointer_type get_result(stack<Token::pointer_type> & operandStack, Toke
 				/*z = 18*/	boolGreaterEqualFunc,
 				/*z = 19*/	boolLessFunc,
 				/*z = 20*/	boolLessEqualFunc,
-				/*z = 21*/	intAbsoluteFunc,
-				/*z = 22*/	realArccosFunc,
-				/*z = 23*/	realArcsinFunc,
-				/*z = 24*/	realArctanFunc,
-				/*z = 25*/	realCeilFunc,
-				/*z = 26*/	realCosFunc,
-				/*z = 27*/	realExpFunc,
-				/*z = 28*/	realFloorFunc,
-				/*z = 29*/	realLbFunc,
-				/*z = 30*/	realLnFunc,
-				/*z = 31*/	realSinFunc,
-				/*z = 32*/	realSqrtFunc,
-				/*z = 33*/	realTanFunc,
-				/*z = 34*/	realMaxFunc,
-				/*z = 35*/	realMinFunc,
-				/*z = 36*/	realArctan2Func,
+				/*z = 21*/	errorFunc,
+				/*z = 22*/	errorFunc,
+				/*z = 23*/	errorFunc,
+				/*z = 24*/	errorFunc,
+				/*z = 25*/	errorFunc,
+				/*z = 26*/	errorFunc,
+				/*z = 27*/	errorFunc,
+				/*z = 28*/	errorFunc,
+				/*z = 29*/	errorFunc,
+				/*z = 30*/	errorFunc,
+				/*z = 31*/	errorFunc,
+				/*z = 32*/	errorFunc,
+				/*z = 33*/	errorFunc,
+				/*z = 34*/	errorFunc,
+				/*z = 35*/	errorFunc,
+				/*z = 36*/	errorFunc,
 				/*z = 37*/	boolXnorFunc }
 		}
 	};
@@ -481,12 +554,18 @@ Operand::pointer_type intAbsoluteFunc(Operand::pointer_type operand1, Operand::p
 		return convert<Operand>(make<Integer>((convert<Integer>(operand1)->get_value()) * -1));
 }
 
-
 Operand::pointer_type intMaxFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
 	return convert<Operand>(make<Integer>(max((convert<Integer>(operand1)->get_value()), (convert<Integer>(operand2)->get_value()))));
 }
+
 Operand::pointer_type intMinFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
 	return convert<Operand>(make<Integer>(min((convert<Integer>(operand1)->get_value()), (convert<Integer>(operand2)->get_value()))));
+}
+
+Operand::pointer_type intAssignFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+	Variable::pointer_type var = convert<Variable>(operand1);
+	var->set_value(convert<Integer>(operand2));
+	return convert<Operand>(var);	
 }
 
 // Real Functions 
@@ -519,7 +598,8 @@ Operand::pointer_type realSubtractionFunc(Operand::pointer_type operand1, Operan
 }
 
 Operand::pointer_type realModulusFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
-	throw "Error: Cannot perform: <Modulus>";
+	cout << "Error: Cannot perform: <Modulus>" << endl;
+	return convert<Operand>(make<Real>((convert<Real>(operand1)->get_value()) - (convert<Real>(operand2)->get_value())));
 }
 
 Operand::pointer_type realPowerFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
@@ -653,6 +733,12 @@ Operand::pointer_type realMinFunc(Operand::pointer_type operand1, Operand::point
 
 Operand::pointer_type realArctan2Func(Operand::pointer_type operand1, Operand::pointer_type operand2) {
 	return convert<Operand>(make<Real>(atan2((convert<Real>(operand1)->get_value()), (convert<Real>(operand2)->get_value()))));
+}
+
+Operand::pointer_type realAssignFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+	Variable::pointer_type var = convert<Variable>(operand1);
+	var->set_value(convert<Real>(operand2));
+	return convert<Operand>(var);
 }
 
 // Boolean Functions
@@ -939,6 +1025,19 @@ Operand::pointer_type boolLessEqualFunc(Operand::pointer_type operand1, Operand:
 		return convert<Operand>(make<Boolean>(false));
 }
 
+Operand::pointer_type boolAssignFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+
+	Variable::pointer_type var = convert<Variable>(operand1);
+	var->set_value(convert<Boolean>(operand2));
+	return convert<Operand>(var);
+}
+
+Operand::pointer_type errorFunc(Operand::pointer_type operand1, Operand::pointer_type operand2) {
+	
+	cout << "Can not compute. Returning 0." << endl;
+	return convert<Operand>(make<Integer>(0));
+}
+
 /*=============================================================
 
 Revision History
@@ -961,3 +1060,4 @@ or in accordance with the terms and conditions
 stipulated in the agreement/contract under which
 the program(s) have been supplied.
 =============================================================*/
+
